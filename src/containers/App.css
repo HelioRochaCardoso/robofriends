@@ -44,3 +44,13 @@ h1 {
   text-decoration: none;
   cursor: pointer;
 }
+
+.modal-main img {
+	position: relative;
+	float: left;
+}
+
+.modal-body {
+	display: grid;
+	grid-template-columns: auto auto;
+}
