@@ -13,16 +13,9 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const useStyles = makeStyles((theme) => ({
     modal: {
-      display: 'flex',
+        display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      flexDirection: 'column',
-      padding: theme.spacing(0, 2, 0, 2),
-    },
-    paper: {
-      backgroundColor: 'white',
-      borderRadius: '5px',
-      padding: theme.spacing(2, 4, 2),
     }
   }));
 
@@ -33,10 +26,10 @@ export default function DialogSlide(props) {
     const [open, setOpen] = React.useState(onOpen);
 
     const {
-        id, name, 
-        username = 'No username available', 
-        email = 'No email available', 
-        website = 'No website available', 
+        id, name,
+        username = 'No username available',
+        email = 'No email available',
+        website = 'No website available',
         phone = 'No phone available',
         address: { city, zipcode } = { city: 'No city available', zipcode: 'No zipcode available' },
         company: { catchPhrase, name: companyName = 'No company name available' } = { catchPhrase: 'No motto available' }
@@ -57,9 +50,9 @@ export default function DialogSlide(props) {
                 aria-labelledby="alert-dialog-slide-title"
                 aria-describedby="alert-dialog-slide-description"
             >
-                <DialogContent className={classes.paper}>
+                <DialogContent style={{padding: '0px 20px'}}>
                     <img alt='robot' src={`https://robohash.org//${id}?200x200`}/>
-                    <Typography variant="h4">{name}</Typography>
+                    <Typography className={'tc'} variant="h4">{name}</Typography>
                         <ul style={{listStyle: 'none'}}>
                             <li><strong>Username:</strong> <i>{username}</i></li>
                             <li><strong>Email:</strong> <i>{email}</i></li>
@@ -71,9 +64,9 @@ export default function DialogSlide(props) {
                             <li><strong>Zip Code:</strong> <i>{zipcode}</i></li>
                         </ul>
                 </DialogContent>
-                    <Button onClick={handleClose} color="primary">
-                        Close
-                    </Button>
+                <Button onClick={handleClose} color="secondary">
+                    &times; Close
+                </Button>
             </Dialog>
         </React.Fragment>
     );
