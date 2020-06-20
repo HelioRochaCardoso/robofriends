@@ -11,11 +11,11 @@ import 'tachyons';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'bootstrap-css-only/css/bootstrap.min.css';
 import 'mdbreact/dist/css/mdb.css';
-import { searchRobots, requestRobots } from './reducers';
+import { searchRobots, requestRobots, robotSelected, toggleModal } from './reducers';
 
 const logger = createLogger();
 
-const rootReducer = combineReducers({ searchRobots, requestRobots });
+const rootReducer = combineReducers({ searchRobots, requestRobots, robotSelected, toggleModal });
 
 const store = createStore(rootReducer, applyMiddleware(thunkMiddleware, logger));
 

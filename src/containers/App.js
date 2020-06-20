@@ -4,63 +4,47 @@ import CardList from '../components/CardList';
 import SearchBox from '../components/SearchBox';
 import Scroll from '../components/Scroll';
 import ErrorBoundary from '../components/ErrorBoundary';
-import Modal from '../components/Modal';
+import DialogSlide from '../components/DialogSlide';
 import './App.css';
-import { setSearchField, requestRobots } from '../actions';
+import { setSearchField, requestRobots, setRobotID, modalToToggle } from '../actions';
 
 const mapStateToProps = state => {
   return {
     searchField: state.searchRobots.searchField,
     robots: state.requestRobots.robots,
     isPending: state.requestRobots.isPending,
-    error: state.requestRobots.error
+    error: state.requestRobots.error,
+    robotID: state.robotSelected.robotID,
+    showModal: state.toggleModal.showModal
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
     onSearchChange: (event) => dispatch(setSearchField(event.target.value)),
-    onRequestRobots: () => dispatch(requestRobots())
+    onRequestRobots: () => dispatch(requestRobots()),
+    onChangeRobot: (event) => {
+      dispatch(modalToToggle(true));
+      dispatch(setRobotID(event.currentTarget.id));
+    },
+    onHideModal: () => {
+      dispatch(modalToToggle(false));
+      dispatch(setRobotID(-1));
+    }
   }
 }
 
 class App extends Component {
-  constructor() {
-    super()
-    this.state = {
-      showModal: false,
-      robotID: -1
-    }
-  }
-
   componentDidMount() {
     this.props.onRequestRobots();
   }
 
-  onToggleModal = (event) => {
-    this.onShowModal();
-    this.setState({
-      robotID: event.currentTarget.id
-    });
-  }
-
-  onShowModal = () => {
-    this.setState({ showModal: true });
-  };
-
-  onHideModal = () => {
-    this.setState({ showModal: false });
-  };
-
   render() {
-    console.log(this.state);
-    const { robotID, showModal } = this.state;
-    const { searchField, onSearchChange, robots, isPending } = this.props;
+    const { searchField, onSearchChange, onChangeRobot, onHideModal, robots, isPending, robotID, showModal } = this.props;
     const filteredRobots = robots.filter(robot => {
       return robot.name.toLowerCase().includes(searchField.toLowerCase());
     });
     let robotToToggle = robots[robotID - 1];
-    console.log(showModal);
     return isPending ?
       <h1 className='tc'>Loading</h1> :
       (
@@ -69,8 +53,8 @@ class App extends Component {
           <SearchBox searchChange={onSearchChange} />
           <Scroll>
             <ErrorBoundary>
-              <Modal showRobot={robotToToggle} handleOpen={showModal} handleClose={this.onHideModal} />
-              <CardList robots={filteredRobots} toggleModal={this.onToggleModal} />
+              <DialogSlide showRobot={robotToToggle} onOpen={showModal} onClose={onHideModal} />
+              <CardList robots={filteredRobots} toggleModal={onChangeRobot} />
             </ErrorBoundary>
           </Scroll>
         </div>
